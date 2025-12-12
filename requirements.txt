@@ -1,0 +1,8 @@
+fastapi[all]        # 包含 uvicorn, pydantic 等
+sqlmodel            # 資料庫 ORM (基於 SQLAlchemy)
+asyncpg             # PostgreSQL 的非同步驅動
+alembic             # 資料庫遷移工具 (Migration)
+python-multipart    # 處理檔案上傳
+pydantic-settings   # 管理環境變數 (.env)
+passlib[bcrypt]     # 密碼雜湊
+python-jose[cryptography] # JWT Token 處理

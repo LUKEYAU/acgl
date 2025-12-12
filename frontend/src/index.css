@@ -1,0 +1,14 @@
+/* frontend/src/index.css */
+
+/* 把原本預設的一大堆樣式全部刪掉，只留下面這三行 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 確保 HTML 和 Body 佔滿全螢幕，防止背景色沒填滿 */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: #f8fafc; /* 對應 Tailwind 的 slate-50 */
+}
