@@ -1,4 +1,4 @@
-#動漫遊戲討論板 (Anime & Gaming Community Forum, AGCF)
+# 動漫遊戲討論板 (Anime & Gaming Community Forum, AGCF)
 ## 需求與前置作業:
 - 需要Docker
 - .env 需要自設

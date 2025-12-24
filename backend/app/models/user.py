@@ -12,12 +12,19 @@ class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str = Field(index=True, unique=True)
     email: str = Field(index=True, unique=True)
+    nickname: Optional[str] = Field(default=None) # 顯示名稱
+    bg_left: Optional[str] = Field(default=None)   # 左欄背景
+    bg_middle: Optional[str] = Field(default=None) # 中欄背景
+    bg_right: Optional[str] = Field(default=None)  # 右欄背景
     hashed_password: str
     is_active: bool = Field(default=True)
     is_superuser: bool = Field(default=False)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
-    # 注意：這裡使用字串 "Post" 和 "Board" 來參照模型
-    # 這是 SQLAlchemy/SQLModel 處理延遲載入的標準做法
     posts: List["Post"] = Relationship(back_populates="owner")
     managed_boards: List["Board"] = Relationship(back_populates="manager")
+
+class UserPublic(SQLModel):
+    id: int
+    username: str
+    nickname: Optional[str] = None

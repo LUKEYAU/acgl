@@ -5,6 +5,29 @@
 @tailwind components;
 @tailwind utilities;
 
+.text-outline-white {
+  color: black;
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff,
+    0px 2px 2px rgba(0,0,0,0.3); /* 加一點點陰影增加層次 */
+}
+
+.text-outline-white .markdown-body p,
+.text-outline-white .markdown-body li,
+.text-outline-white h1,
+.text-outline-white h2,
+.text-outline-white h3 {
+    color: black;
+    text-shadow:
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+}
+
 /* 確保 HTML 和 Body 佔滿全螢幕，防止背景色沒填滿 */
 html, body, #root {
   height: 100%;
