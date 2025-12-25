@@ -94,8 +94,5 @@ async def google_callback(code: str, session: AsyncSession = Depends(get_session
     jwt_data = {"sub": str(user.id), "email": user.email}
     jwt_token = create_access_token(jwt_data)
 
-    # 5. 回傳給前端 (通常是導向一個前端頁面並帶上 Token)
-    # 這裡我們為了展示方便，先直接回傳 JSON，但實際應用中應導向前端頁面
-    # RedirectResponse('/frontend/login/success?token=...')
-    frontend_url = f"http://localhost:5173/auth/callback?token={jwt_token}"
+    frontend_url = f"http://localhost/auth/callback?token={jwt_token}"
     return RedirectResponse(url=frontend_url)

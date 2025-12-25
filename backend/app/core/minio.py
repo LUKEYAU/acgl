@@ -1,24 +1,34 @@
-# backend/app/core/minio.py
-
 from minio import Minio
-from app.core.config import settings
-
+import os
 
 class MinioHandler:
     def __init__(self):
-        self.client = Minio(
-            "localhost:9000", # 注意：如果在 WSL 內跑 FastAPI 但 MinIO 在 Docker，可能要用 localhost
-            access_key="minioadmin",
-            secret_key="minioadmin",
-            secure=False # 本機開發通常不用 SSL
-        )
+        self.minio_url = os.getenv("MINIO_URL", "minio:9000")
+        self.access_key = os.getenv("MINIO_ROOT_USER", "minioadmin")
+        self.secret_key = os.getenv("MINIO_ROOT_PASSWORD", "minioadmin")
         self.bucket_name = "acg-images"
-        self._check_bucket()
+        self.client = None 
+
+    def get_client(self):
+        if self.client is None:
+            try:
+                print(f"正在嘗試連線 MinIO: {self.minio_url}...")
+                self.client = Minio(
+                    self.minio_url,
+                    access_key=self.access_key,
+                    secret_key=self.secret_key,
+                    secure=False
+                )
+                self._check_bucket()
+                print("MinIO 連線成功！")
+            except Exception as e:
+                print(f"MinIO 連線失敗: {e}")
+                return None
+        return self.client
 
     def _check_bucket(self):
         if not self.client.bucket_exists(self.bucket_name):
             self.client.make_bucket(self.bucket_name)
-            # 設定為公開讀取 (這很重要，不然前端讀不到圖)
             policy = """
             {
               "Version": "2012-10-17",
@@ -35,7 +45,11 @@ class MinioHandler:
             self.client.set_bucket_policy(self.bucket_name, policy)
 
     def upload_file(self, file_data, file_name, content_type):
-        self.client.put_object(
+        client = self.get_client()
+        if not client:
+            raise Exception("MinIO 服務無法連線，請檢查 Docker logs")
+            
+        client.put_object(
             self.bucket_name,
             file_name,
             file_data,
@@ -43,7 +57,7 @@ class MinioHandler:
             part_size=10*1024*1024,
             content_type=content_type
         )
-        # 回傳可訪問的 URL
-        return f"http://localhost:9000/{self.bucket_name}/{file_name}"
+        
+        return f"/acg-images/{file_name}"
 
 minio_handler = MinioHandler()

@@ -12,8 +12,6 @@ export default function AuthCallback() {
       // 1. 存入 Token
       localStorage.setItem('token', token);
       
-      // 2. 【關鍵修正】強制瀏覽器跳轉回首頁 (會觸發頁面重整)
-      // 這能確保 App.tsx 重新讀取 localStorage 並更新使用者狀態
       window.location.href = '/'; 
     } else {
       // 失敗則導回首頁
